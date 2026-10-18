@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101828">
+<title>NEXORA MARKET</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#172033}
+header{background:#101828;color:white;padding:18px}
+.brand{font-size:23px;font-weight:800;letter-spacing:1px}
+.brand span{color:#45d7c5}
+header p{font-size:12px;color:#cbd5e1}
+nav{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+button{border:0;border-radius:9px;padding:11px 14px;font-weight:bold;cursor:pointer}
+nav button{background:#273449;color:white}
+nav button.active{background:#45d7c5;color:#101828}
+.hero{padding:25px 18px;background:linear-gradient(135deg,#4338ca,#087e8b);color:white}
+.hero h1{font-size:29px;margin:0 0 10px}
+.hero p{line-height:1.6}
+main{max-width:1000px;margin:auto;padding:20px 15px 40px}
+.panel{background:white;border:1px solid #e2e8f0;border-radius:14px;padding:16px;margin-bottom:20px}
+h2{font-size:20px;margin:0 0 15px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #dbe2ec;border-radius:9px;margin:6px 0 12px;font:inherit;background:white}
+textarea{min-height:85px;resize:vertical}
+label{font-size:13px;font-weight:bold}
+.primary{background:#101828;color:white}
+.success{background:#45d7c5;color:#101828}
+.danger{background:#fee2e2;color:#991b1b}
+.full{width:100%}
+.searchrow{display:flex;gap:8px}
+.searchrow input{flex:1;min-width:0}
+.categories{display:flex;gap:8px;overflow:auto;margin-bottom:16px;padding-bottom:5px}
+.category{white-space:nowrap;background:white;border:1px solid #dbe2ec}
+.category.active{background:#101828;color:white}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.product{background:white;border:1px solid #e2e8f0;border-radius:13px;overflow:hidden}
+.art{height:105px;display:grid;place-items:center;font-size:42px;background:linear-gradient(135deg,#e0e7ff,#ccfbf1)}
+.info{padding:11px}
+.tag{font-size:10px;background:#eef2ff;color:#4338ca;padding:5px 7px;border-radius:5px}
+.info h3{font-size:14px;margin:10px 0}
+.desc{font-size:12px;line-height:1.5;color:#64748b;overflow-wrap:anywhere}
+.price{font-size:16px;font-weight:bold;margin:12px 0}
+.actions{display:grid;gap:7px}
+.actions button{width:100%}
+.small{font-size:12px;color:#64748b;line-height:1.6}
+.notice{background:#fff7ed;border-radius:9px;padding:12px;font-size:12px;line-height:1.6;color:#9a3412;margin-bottom:15px}
+.empty{grid-column:1/-1;text-align:center;padding:25px;background:white;border-radius:12px;color:#64748b}
+footer{background:#101828;color:#cbd5e1;text-align:center;padding:24px;font-size:12px;line-height:1.8}
+[hidden]{display:none!important}
+@media(min-width:650px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}.art{height:145px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">NEXORA <span>MARKET</span></div>
+  <p>A world of products. One marketplace.</p>
+  <nav>
+    <button class="active" data-page="market">Marketplace</button>
+    <button data-page="seller">Seller Center</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1 id="heroTitle">Discover Your Next Favorite.</h1>
+  <p id="heroText">Explore digital products, physical goods and creative services in one place.</p>
+</section>
+
+<main>
+  <section id="marketPage">
+    <div class="panel">
+      <h2>Find Products</h2>
+      <input id="search" type="search" placeholder="Search products..." aria-label="Search products">
+      <div class="categories" id="categories">
+        <button class="category active" data-category="All">All</button>
+        <button class="category" data-category="Digital">Digital</button>
+        <button class="category" data-category="Electronics">Electronics</button>
+        <button class="category" data-category="Fashion">Fashion</button>
+        <button class="category" data-category="Services">Services</button>
+        <button class="category" data-category="Other">Other</button>
+      </div>
+      <div class="small" id="resultCount"></div>
+    </div>
+    <div class="products" id="products"></div>
+  </section>
+
+  <section id="sellerPage" hidden>
+    <div class="panel">
+      <h2>🛍️ Seller Center</h2>
+      <div class="notice">
+        Demo mode: listings are saved in this browser on this device.
+        They are not uploaded to a shared online marketplace yet.
+        Only list products you own or have permission to sell.
+      </div>
+      <form id="productForm">
+        <label for="productName">Product name</label>
+        <input id="productName" maxlength="70" required placeholder="e.g. My Digital Design Pack">
+
+        <label for="productCategory">Category</label>
+        <select id="productCategory" required>
+          <option value="Digital">Digital Products</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Fashion">Fashion</option>
+          <option value="Services">Services</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label for="productType">Listing type</label>
+        <select id="productType">
+          <option value="Digital">Digital</option>
+          <option value="Physical">Physical</option>
+          <option value="Service">Service</option>
+        </select>
+
+        <label for="productPrice">Price (USD demo)</label>
+        <input id="productPrice" type="number" min="0" max="1000000" step="0.01" required placeholder="e.g. 10.00">
+
+        <label for="productIcon">Emoji icon</label>
+        <select id="productIcon">
+          <option value="📦">📦 Package</option>
+          <option value="💻">💻 Computer</option>
+          <option value="🎨">🎨 Design</option>
+          <option value="📚">📚 Book</option>
+          <option value="🎧">🎧 Headphones</option>
+          <option value="👕">👕 Clothing</option>
+          <option value="🛠️">🛠️ Service</option>
+          <option value="✨">✨ Other</option>
+        </select>
+
+        <label for="productDescription">Description</label>
+        <textarea id="productDescription" maxlength="500" required placeholder="Describe your product..."></textarea>
+
+        <button class="success full" type="submit">＋ Publish Demo Listing</button>
+      </form>
+      <p class="small" id="formMessage" role="status"></p>
+    </div>
+
+    <div class="panel">
+      <h2>My Demo Listings</h2>
+      <p class="small">Remove listings you created on this device.</p>
+      <div id="myListings"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>NEXORA MARKET</strong><br>
+  Demo marketplace built for future expansion.<br>
+  No real orders, accounts or payments are enabled.
+</footer>
+
+<script>
+const starterProducts = [
+  {id:"demo1",name:"Wireless Headphones",category:"Electronics",type:"Physical",price:45,icon:"🎧",description:"Everyday wireless audio.",owner:"demo"},
+  {id:"demo2",name:"Creative UI Kit",category:"Digital",type:"Digital",price:12,icon:"🎨",description:"Reusable interface designs.",owner:"demo"},
+  {id:"demo3",name:"Streetwear Backpack",category:"Fashion",type:"Physical",price:35,icon:"🎒",description:"A practical everyday bag.",owner:"demo"},
+  {id:"demo4",name:"Website Development",category:"Services",type:"Service",price:80,icon:"💻",description:"Custom website creation.",owner:"demo"},
+  {id:"demo5",name:"Digital E-book",category:"Digital",type:"Digital",price:8,icon:"📚",description:"A sample downloadable product.",owner:"demo"},
+  {id:"demo6",name:"Running Sneakers",category:"Fashion",type:"Physical",price:55,icon:"👟",description:"Comfortable casual footwear.",owner:"demo"}
+];
+
+const STORAGE_KEY = "nexora_market_listings_v1";
+let userProducts = [];
+let activeCategory = "All";
+
+try {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    if (Array.isArray(parsed)) {
+      userProducts = parsed.filter(p =>
+        p && typeof p.id === "string" &&
+        typeof p.name === "string" &&
+        typeof p.description === "string" &&
+        Number.isFinite(p.price) &&
+        typeof p.category === "string"
+      );
+    }
+  }
+} catch (error) {
+  console.warn("Saved listings could not be read.", error);
+}
+
+function allProducts() {
+  return [...starterProducts, ...userProducts];
+}
+
+function safeText(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[char]);
+}
+
+function renderProducts() {
+  const query = document.getElementById("search").value.trim().toLowerCase();
+
+  const filtered = allProducts().filter(p => {
+    const categoryMatch = activeCategory === "All" || p.category === activeCategory;
+    const searchMatch = (p.name + " " + p.description + " " + p.category)
+      .toLowerCase().includes(query);
+    return categoryMatch && searchMatch;
+  });
+
+  document.getElementById("resultCount").textContent =
+    filtered.length + " product(s)";
+
+  const container = document.getElementById("products");
+
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty">No products found.</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(p => `
+    <article class="product">
+      <div class="art" aria-hidden="true">${safeText(p.icon || "📦")}</div>
+      <div class="info">
+        <span class="tag">${safeText(p.type || "Product")}</span>
+        <h3>${safeText(p.name)}</h3>
+        <div class="desc">${safeText(p.description)}</div>
+        <div class="price">$${Number(p.price).toFixed(2)}</div>
+        <button class="primary full" data-view="${safeText(p.id)}">View Details</button>
+      </div>
+    </article>
+  `).join("");
+}
+
+function renderMyListings() {
+  const container = document.getElementById("myListings");
+
+  if (!userProducts.length) {
+    container.innerHTML = '<p class="small">You have not published any demo listings yet.</p>';
+    return;
+  }
+
+  container.innerHTML = userProducts.map(p => `
+    <div style="padding:12px 0;border-bottom:1px solid #e2e8f0">
+      <strong>${safeText(p.name)}</strong>
+      <div class="small">${safeText(p.category)} · $${Number(p.price).toFixed(2)}</div>
+      <button class="danger" style="margin-top:8px" data-delete="${safeText(p.id)}">Delete Listing</button>
+    </div>
+  `).join("");
+}
+
+function saveListings() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(userProducts));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+document.querySelector("nav").addEventListener("click", event => {
+  const button = event.target.closest("[data-page]");
+  if (!button) return;
+
+  const isSeller = button.dataset.page === "seller";
+  document.getElementById("marketPage").hidden = isSeller;
+  document.getElementById("sellerPage").hidden = !isSeller;
+  document.getElementById("heroTitle").textContent =
+    isSeller ? "Build Your Store." : "Discover Your Next Favorite.";
+  document.getElementById("heroText").textContent =
+    isSeller ? "Create and manage your demo product listings." :
+    "Explore digital products, physical goods and creative services in one place.";
+
+  document.querySelectorAll("nav button").forEach(b =>
+    b.classList.toggle("active", b === button)
+  );
+
+  if (isSeller) renderMyListings();
+});
+
+document.getElementById("categories").addEventListener("click", event => {
+  const button = event.target.closest("[data-category]");
+  if (!button) return;
+
+  activeCategory = button.dataset.category;
+  document.querySelectorAll(".category").forEach(b =>
+    b.classList.toggle("active", b === button)
+  );
+  renderProducts();
+});
+
+document.getElementById("search").addEventListener("input", renderProducts);
+
+document.getElementById("products").addEventListener("click", event => {
+  const button = event.target.closest("[data-view]");
+  if (!button) return;
+
+  const product = allProducts().find(p => p.id === button.dataset.view);
+  if (!product) return;
+
+  alert(
+    product.name + "\n\n" + product.description +
+    "\n\nCategory: " + product.category +
+    "\nPrice: $" + Number(product.price).toFixed(2) +
+    "\n\nDemo only — buying is not enabled."
+  );
+});
+
+document.getElementById("productForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const name = document.getElementById("productName").value.trim();
+  const description = document.getElementById("productDescription").value.trim();
+  const price = Number(document.getElementById("productPrice").value);
+
+  if (!name || !description || !Number.isFinite(price) || price < 0 || price > 1000000) {
+    document.getElementById("formMessage").textContent =
+      "Please enter a valid name, description and price.";
+    return;
+  }
+
+  const product = {
+    id: "user-" + Date.now() + "-" + Math.random().toString(36).slice(2,8),
+    name,
+    category: document.getElementById("productCategory").value,
+    type: document.getElementById("productType").value,
+    price,
+    icon: document.getElementById("productIcon").value,
+    description,
+    owner: "local-demo"
+  };
+
+  userProducts.push(product);
+
+  if (!saveListings()) {
+    userProducts.pop();
+    document.getElementById("formMessage").textContent =
+      "Could not save. Your browser storage may be full or unavailable.";
+    return;
+  }
+
+  event.target.reset();
+  document.getElementById("formMessage").textContent =
+    "Demo listing published and saved on this device.";
+  renderMyListings();
+  renderProducts();
+});
+
+document.getElementById("myListings").addEventListener("click", event => {
+  const button = event.target.closest("[data-delete]");
+  if (!button) return;
+
+  const id = button.dataset.delete;
+  const oldProducts = userProducts;
+  userProducts = userProducts.filter(p => p.id !== id);
+
+  if (!saveListings()) {
+    userProducts = oldProducts;
+    alert("Could not save the change. Please try again.");
+    return;
+  }
+
+  renderMyListings();
+  renderProducts();
+});
+
+renderProducts();
+renderMyListings();
+</script>
+</body>
+</html>
